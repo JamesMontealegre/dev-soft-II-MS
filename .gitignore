@@ -1,0 +1,22 @@
+# Node.js
+node_modules/
+npm-debug.log
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Archivos del sistema
+.DS_Store
+
+# Datos locales simulados (¡IMPORTANTE!)
+# Evita versionar los datos reales que se generen
+estudiante-service/estudiantes.json

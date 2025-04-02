@@ -1,0 +1,34 @@
+# Define la versión del archivo docker-compose (aunque esta línea ya es opcional en versiones modernas)
+version: '3'
+
+# Aquí se definen los servicios (contenedores) que compondrán la aplicación
+services:
+
+  # Servicio para gestionar estudiantes (Node.js + Express)
+  estudiante-service:
+    # Construye la imagen a partir del Dockerfile ubicado en ./estudiante-service
+    build: ./estudiante-service
+
+    # Expone el puerto 3000 del contenedor al puerto 3000 de tu máquina local
+    # Esto permite acceder al servicio desde http://localhost:3000
+    ports:
+      - "3000:3000"
+
+    # Sincroniza el archivo estudiantes.json entre tu máquina y el contenedor
+    # Permite que los datos persistan entre reinicios y se vean reflejados localmente
+    volumes:
+      - ./estudiante-service/estudiantes.json:/app/estudiantes.json
+
+    # Este servicio depende del servicio de promedio, así que se asegura de que ese contenedor esté listo antes de arrancar
+    depends_on:
+      - promedio-service
+
+  # Servicio de cálculo de promedios (Python + Flask)
+  promedio-service:
+    # Construye la imagen a partir del Dockerfile ubicado en ./promedio-service
+    build: ./promedio-service
+
+    # Expone el puerto 5001 del contenedor al puerto 5001 de tu máquina local
+    # Se accede desde http://localhost:5001 (aunque normalmente solo es llamado internamente)
+    ports:
+      - "5001:5001"
